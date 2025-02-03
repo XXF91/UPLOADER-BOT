@@ -4,6 +4,8 @@
 
 import os
 import logging
+import os
+os.system("ntpdate -q time.google.com")
 from config import Config
 from pyrogram import Client as Clinton
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
