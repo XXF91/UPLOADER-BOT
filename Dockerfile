@@ -7,7 +7,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # تثبيت الأدوات اللازمة لمزامنة الوقت
 RUN apt-get update && apt-get install -y ntpdate ffmpeg && apt-get clean
-
+RUN apt-get update && apt-get install -y ntpdate
+RUN ntpdate time.google.com
 # تحديد مجلد العمل
 WORKDIR /app
 
