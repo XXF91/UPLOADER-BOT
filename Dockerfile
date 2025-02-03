@@ -1,22 +1,10 @@
-# استخدم صورة Python المناسبة
-FROM python:3.12
-
-# ضبط التوقيت إلى UTC
-ENV TZ=Etc/UTC
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-# تثبيت الأدوات اللازمة لمزامنة الوقت
-RUN apt-get update && apt-get install -y ntpdate ffmpeg && apt-get clean
-
-# تحديد مجلد العمل
+FROM python:3.10.8
 WORKDIR /app
-
-# نسخ الملفات إلى الحاوية
 COPY ./ /app
-
-# تثبيت المتطلبات
+ENV PYTHONUNBUFFERED=1
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
-
-# تشغيل مزامنة الوقت قبل تشغيل التطبيق
-CMD ntpdate -s time.google.com && gunicorn app:app & python3 bot.py
+RUN apt-get -y update
+RUN apt-get -y upgrade
+RUN apt-get install -y ffmpeg
+CMD gunicorn app:app & python3 bot.py
