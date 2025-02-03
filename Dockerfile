@@ -1,7 +1,7 @@
-# استخدم صورة بايثون الرسمية
+# استخدم صورة Python المناسبة
 FROM python:3.10.8
 
-# تعيين منطقة التوقيت إلى UTC لتجنب مشاكل التزامن
+# ضبط التوقيت إلى UTC
 ENV TZ=Etc/UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -14,15 +14,9 @@ WORKDIR /app
 # نسخ الملفات إلى الحاوية
 COPY ./ /app
 
-# منع التخزين المؤقت لملفات بايثون
-ENV PYTHONUNBUFFERED=1
-
 # تثبيت المتطلبات
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# مزامنة الوقت مع خادم Google قبل تشغيل البوت
-RUN ntpdate -q time.google.com
-
-# تشغيل البوت عند بدء الحاوية
-CMD gunicorn app:app & python3 bot.py
+# تشغيل مزامنة الوقت قبل تشغيل التطبيق
+CMD ntpdate -s time.google.com && gunicorn app:app & python3 bot.py
