@@ -1,5 +1,5 @@
 # استخدم صورة Python المناسبة
-FROM clintonabraham/clinton:latest
+FROM python:3.12
 
 # ضبط التوقيت إلى UTC
 ENV TZ=Etc/UTC
